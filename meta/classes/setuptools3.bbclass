@@ -1,4 +1,4 @@
-inherit setuptools3-base python_pep517
+inherit setuptools3-base python_pep517 
 
 # bdist_wheel builds in ./dist
 #B = "${WORKDIR}/build"
@@ -30,4 +30,5 @@ setuptools3_do_install() {
 EXPORT_FUNCTIONS do_configure do_compile do_install
 
 export LDSHARED="${CCLD} -shared"
-DEPENDS += "python3-setuptools-native python3-wheel-native"
+DEPENDS += "python3-setuptools-native python3-wheel-native python3-flit-core"
+RDEPENDS_${PN} += "python3-wheel python3-flit-core"

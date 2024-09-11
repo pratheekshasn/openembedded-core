@@ -17,6 +17,7 @@ PEP517_WHEEL_PATH ?= "${WORKDIR}/dist"
 
 # The interpreter to use for installed scripts
 PEP517_INSTALL_PYTHON = "python3"
+PYTHON3_NATIVE = "/usr/bin/python3.12"
 PEP517_INSTALL_PYTHON:class-native = "nativepython3"
 
 # pypa/installer option to control the bytecode compilation
@@ -31,12 +32,14 @@ python_pep517_do_configure () {
 # When we have Python 3.11 we can parse pyproject.toml to determine the build
 # API entry point directly
 python_pep517_do_compile () {
+    # bbwarn "In python_pep517_do_compile()"
     cd ${PEP517_SOURCE_PATH}
     nativepython3 -c "import ${PEP517_BUILD_API} as api; api.build_wheel('${PEP517_WHEEL_PATH}')"
 }
 do_compile[cleandirs] += "${PEP517_WHEEL_PATH}"
 
 python_pep517_do_install () {
+    # bbwarn "In python_pep517_do_install()"
     COUNT=$(find ${PEP517_WHEEL_PATH} -name '*.whl' | wc -l)
     if test $COUNT -eq 0; then
         bbfatal No wheels found in ${PEP517_WHEEL_PATH}
